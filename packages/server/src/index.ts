@@ -2,16 +2,14 @@ import { readdir } from 'node:fs/promises'
 import express from "express"
 import fs from "fs"
 import path from "path"
-
-const PORT_NUMBER = 8000
+import { PORT_NUMBER, VIDEO_DIR } from './config'
 
 const app = express()
 
 app.use("/", express.static(path.join(__dirname, "client")))
 
-app.get("/api/videos", async (req, res) => {
-    const videoDir = "/mnt/d/minsoung/secret"
-    const files = await readdir(videoDir)
+app.get("/api/videos", async (_, res) => {
+    const files = await readdir(VIDEO_DIR)
 
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify({ files: files.filter((fileName) => fileName.includes(".mp4")) }))
@@ -25,7 +23,7 @@ app.get("/api/videos/:fileName", (req, res) => {
         res.status(400).send("Requires Range header")
         return
     }
-    const videoPath = `/mnt/d/minsoung/secret/${fileName}`
+    const videoPath = `${VIDEO_DIR}/${fileName}`
     const videoSize = fs.statSync(videoPath).size
     const CHUNK_SIZE = 10 ** 6
     const start = Number(range.replace(/\D/g, ""))
@@ -45,3 +43,4 @@ app.get("/api/videos/:fileName", (req, res) => {
 app.listen(PORT_NUMBER, "0.0.0.0", () => {
     console.log(`Listening on port ${PORT_NUMBER}`)
 })
+

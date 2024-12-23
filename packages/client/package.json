@@ -1,5 +1,5 @@
 {
-  "name": "local-drive",
+  "name": "client",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -7,9 +7,5 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
-  "workspaces": [
-    "packages/server",
-    "packages/client"
-  ]
+  "description": ""
 }
