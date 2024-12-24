@@ -1,18 +1,22 @@
-import { readdir } from 'node:fs/promises'
-import express from "express"
-import fs from "fs"
-import path from "path"
-import { PORT_NUMBER, VIDEO_DIR } from './config'
+import { readdir } from "node:fs/promises"
+import fs from "node:fs"
+import path from "node:path"
+import expressDefault, * as express from "express"
+import { PORT_NUMBER, VIDEO_DIR } from "./config"
 
-const app = express()
+const app = expressDefault()
 
 app.use("/", express.static(path.join(__dirname, "client")))
 
 app.get("/api/videos", async (_, res) => {
     const files = await readdir(VIDEO_DIR)
 
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify({ files: files.filter((fileName) => fileName.includes(".mp4")) }))
+    res.setHeader("Content-Type", "application/json")
+    res.end(
+        JSON.stringify({
+            files: files.filter((fileName) => fileName.includes(".mp4")),
+        }),
+    )
 })
 
 app.get("/api/videos/:fileName", (req, res) => {
@@ -41,6 +45,5 @@ app.get("/api/videos/:fileName", (req, res) => {
 })
 
 app.listen(PORT_NUMBER, "0.0.0.0", () => {
-    console.log(`Listening on port ${PORT_NUMBER}`)
+    process.stdout.write(`Listening on port ${PORT_NUMBER}\n`)
 })
-
