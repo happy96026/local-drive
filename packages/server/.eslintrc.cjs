@@ -54,6 +54,7 @@ module.exports = {
                 },
             },
             rules: {
+                "@typescript-eslint/class-literal-property-style": "off",
                 "@typescript-eslint/restrict-template-expressions": [
                     "error",
                     {

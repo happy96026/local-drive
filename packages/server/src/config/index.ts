@@ -1,4 +1,17 @@
-import { join } from "path"
+import { AppConfig } from "src/config/app-config"
+import { LogConfig } from "src/config/log-config"
+import { lazy } from "src/util"
 
-export const PORT_NUMBER = 8000
-export const VIDEO_DIR = join(__dirname, "../../static")
+class AppContext {
+    @lazy
+    get appConfig(): AppConfig {
+        return new AppConfig(this.logConfig)
+    }
+
+    @lazy
+    get logConfig(): LogConfig {
+        return new LogConfig()
+    }
+}
+
+export const appContext = new AppContext()
