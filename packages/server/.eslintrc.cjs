@@ -12,6 +12,26 @@ module.exports = {
     env: {
         node: true,
     },
+    rules: {
+        "import/order": [
+            "warn",
+            {
+                alphabetize: {
+                    order: "asc",
+                    caseInsensitive: false,
+                },
+                groups: [
+                    "builtin", // Node.js built-in modules
+                    "external", // Packages
+                    "internal", // Aliased modules
+                    "parent", // Relative parent
+                    "sibling", // Relative sibling
+                    "index", // Relative index
+                ],
+                "newlines-between": "never",
+            },
+        ],
+    },
     overrides: [
         {
             files: ["**/*.ts"],
@@ -36,10 +56,13 @@ module.exports = {
             rules: {
                 "@typescript-eslint/restrict-template-expressions": [
                     "error",
-                    { allowNumber: true, allowBoolean: true, allowNullish: true }
+                    {
+                        allowNumber: true,
+                        allowBoolean: true,
+                        allowNullish: true,
+                    },
                 ],
             },
         },
-    ]
+    ],
 }
-

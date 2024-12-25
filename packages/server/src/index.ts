@@ -1,10 +1,13 @@
-import { readdir } from "node:fs/promises"
+import { Console } from "node:console"
 import fs from "node:fs"
+import { readdir } from "node:fs/promises"
 import path from "node:path"
+import { stderr, stdout } from "node:process"
 import expressDefault, * as express from "express"
 import { PORT_NUMBER, VIDEO_DIR } from "./config"
 
 const app = expressDefault()
+const console = new Console(stdout, stderr)
 
 app.use("/", express.static(path.join(__dirname, "client")))
 
@@ -45,5 +48,5 @@ app.get("/api/videos/:fileName", (req, res) => {
 })
 
 app.listen(PORT_NUMBER, "0.0.0.0", () => {
-    process.stdout.write(`Listening on port ${PORT_NUMBER}\n`)
+    console.log(`Listening on port ${PORT_NUMBER}`)
 })
