@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "start": "deno run --allow-read=../ --allow-net src/main.ts"
+  },
+  "imports": {
+    "@oak/oak": "jsr:@oak/oak@^17.1.4",
+    "@src/": "./src/",
+    "@std/fs": "jsr:@std/fs@^1.0.18",
+    "@std/path": "jsr:@std/path@^1.1.0"
+  }
+}

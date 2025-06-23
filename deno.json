@@ -1,0 +1,12 @@
+{
+  "workspace": ["./server"]
+  "compilerOptions": {
+    "lib": [
+      "deno.window"
+    ]
+  },
+  "fmt": {
+    "semiColons": false
+  },
+  "vendor": true
+}
