@@ -1,50 +1,8 @@
 <!doctype html>
 <html>
+  <head>
+    <script type="text/javascript" src="index.js" defer></script>
+    </head>
     <body>
-        <div class="video">
-        </div>
-
-        <div class="buttons">
-        </div>
-
-        <script>
-            async function main() {
-                const { files } = await fetch(`${window.location.origin}/api/videos`).then(res => res.json())
-
-                for (const { videoName, subtitleNames } of files) {
-                    const button = document.createElement("button")
-                    button.textContent = videoName
-                    button.addEventListener("click", () => {
-                        const oldVideo = document.querySelector(".video video")
-                        oldVideo?.remove()
-
-                        const video = document.createElement("video")
-                        video.width = 640
-                        video.height = 480
-                        video.controls = true
-                        video.autoplay = true
-
-                        const source = document.createElement("source")
-                        source.src = `${window.location.origin}/api/videos/${videoName}`
-                        video.appendChild(source)
-
-                        for (const subtitleName of subtitleNames) {
-                            const track = document.createElement("track")
-                            track.label = "English"
-                            track.kind = "subtitles"
-                            track.srclang = "en"
-                            track.src = `${window.location.origin}/api/videos/${subtitleName}`
-                            video.appendChild(track)
-                        }
-
-                        document.querySelector(".video").appendChild(video)
-                    })
-
-                    document.querySelector(".buttons").appendChild(button)
-                }
-            }
-
-            main()
-        </script>
     </body>
 </html>

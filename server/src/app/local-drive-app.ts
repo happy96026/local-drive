@@ -1,6 +1,9 @@
 import { Application } from "@oak/oak/application"
 import { Router } from "@oak/oak/router"
 import { walk } from "@std/fs"
+import { Context } from "@oak/oak/context"
+
+export { LocalDriveApp }
 
 interface LocalDriveAppOptions {
   readonly portNumber: number
@@ -16,13 +19,10 @@ class LocalDriveApp {
     private readonly options: LocalDriveAppOptions,
   ) {}
 
-  start(this: this): Promise<void> {
-    this.router.get("/", async (context) => {
-      await context.send({
-        root: this.options.clientDir,
-        index: "index.html",
-      })
-    })
+  start(this: this) {
+    this.router
+      .get("/", async (context) => await this.sendStatic(context))
+      .get("/index.js", async (context) => await this.sendStatic(context))
       .get("/api/videos", async (context) => {
         const videoSet = new Set<string>()
         const subtitleSet = new Set<string>()
@@ -42,9 +42,11 @@ class LocalDriveApp {
 
             return {
               videoName,
-              subtitleNames: [subtitleSet.has(subtitleName) ? subtitleName : null].filter(Boolean)
+              subtitleNames: [
+                subtitleSet.has(subtitleName) ? subtitleName : null,
+              ].filter(Boolean),
             }
-          })
+          }),
         }
       })
       .get("/api/videos/:fileName", async (context) => {
@@ -61,11 +63,16 @@ class LocalDriveApp {
       console.log(`Listening on port ${port}`)
     })
 
-    return this.app.listen({
+    this.app.listen({
       port: this.options.portNumber,
       hostname: this.options.ipAddress,
     })
   }
-}
 
-export { LocalDriveApp }
+  private async sendStatic(this: this, context: Context) {
+    await context.send({
+      root: this.options.clientDir,
+      index: "index.html"
+    })
+  }
+}
